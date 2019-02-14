@@ -5,3 +5,8 @@
 
 <h2>Welcome, @ViewBag.CurrentUser.FirstName!</h2>
 
+@if (ViewBag.CurrentUser != null)
+{
+    @Html.ActionLink("Logout User", "LogOut", "Home")
+}
+
