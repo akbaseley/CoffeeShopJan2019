@@ -9,7 +9,18 @@ namespace CoffeeShopLabJan2019.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        List<Item> ItemList = new List<Item>() {
+
+            new Item("Hot Chocolate", "Milk, Cocoa, Sugar, Fat", 1.99),
+            new Item("Latte",  "Milk, Coffee", 1.99),
+            new Item("Coffee",  "Coffee, Water", 1.00),
+            new Item("Tea", "Black Tea", 1.00),
+            new Item("Frozen Lemonade",  "Lemon, Sugar, Ice", 1.99)
+        };
+
+        List<Item> ShoppingCart = new List<Item>();
+
+    public ActionResult Index()
         {
             ViewBag.CurrentUser = (User)Session["CurrentUser"];
             return View();
@@ -74,5 +85,29 @@ namespace CoffeeShopLabJan2019.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult ListItems()
+        {
+            ViewBag.ItemsList = ItemList;
+            return View();
+        }
+
+        public ActionResult AddItem(string itemName)
+        {
+            if(Session["ShoppingCart"] != null)
+            {
+                ShoppingCart = (List<Item>)Session["ShoppingCart"];
+            }
+
+            foreach(Item item in ItemList)
+            {              //find item in list
+                if(item.ItemName == itemName)
+                {
+                    ShoppingCart.Add(item);
+                }
+            }
+
+            Session["ShoppingCart"] = ShoppingCart;
+            return RedirectToAction("ListItems");
+        }
     }
 }
